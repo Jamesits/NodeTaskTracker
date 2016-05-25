@@ -45,13 +45,11 @@ router.get('/', function (req, res)
 });
 
 router.route('/tasks')
-	// get all the tasks (accessed at GET http://localhost:8080/api/tasks)
 	.get(function (req, res)
 	{
 		res.json(taskStorage);
 	})
-	// update a task (accessed at PUT http://localhost:8080/api/tasks/:project)
-	.put(function (req, res)
+	.post(function (req, res)
 	{
 		res.json(
 		{

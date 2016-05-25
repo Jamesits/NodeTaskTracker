@@ -1,17 +1,18 @@
 function renderTaskList(data)
 {
-	var template = "<ul> \
+	var template = '<ul> \
         {{#projects}} \
-            <li>{{name}} \
+            <li><input type="checkbox"></input>{{name}} \
                 <ul> \
                     {{#tasks}} \
-                        <li>{{name}}: \
+                        <li><input type="checkbox"></input> \
+                            {{name}}: \
                             {{start_time}}</li> \
                     {{/tasks}} \
                 </ul> \
             </li> \
         {{/projects}} \
-    </ul>"
+    </ul>'
 	return Mustache.render(template, data);
 }
 
