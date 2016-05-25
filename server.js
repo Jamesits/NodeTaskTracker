@@ -33,7 +33,7 @@ function getProject(proj) {
     {
         return e.name === proj;
     })
-}
+};
 
 function getTask(proj, task) {
     return taskStorage.projects.find(function (e)
@@ -44,7 +44,7 @@ function getTask(proj, task) {
         {
             return e.name === task;
         })
-}
+};
 // ======= model ========
 
 router.use(function (req, res, next)
@@ -71,19 +71,19 @@ router.route('/tasks')
 		res.json(taskStorage);
 	})
 	// add project
-	.post(function (req, res)
+	.post(function (req, res, next)
 	{
-        var t = getProject(req.params.project);
-        if (t == undefined) return next(err);
-		taskStorage.projects.push(
-		{
-			"name": req.body.name,
-			"tasks": []
-		});
-		res.json(
-		{
-			message: 'task added!'
-		});
+        var t = getProject(req.body.name);
+        if (typeof t !== 'undefined') return res.status(500).json({"message": "Already exists"});
+				taskStorage.projects.push(
+				{
+					"name": req.body.name,
+					"tasks": []
+				});
+				res.status(201).json(
+				{
+					message: 'task added!'
+				});
 	});
 
 router.route('/tasks/:project')
@@ -93,10 +93,10 @@ router.route('/tasks/:project')
 		res.json(getProject(req.params.project))
 	})
 	// modify project name
-	.put(function (req, res)
+	.put(function (req, res, next)
 	{
         var t = getProject(req.params.project);
-        if (t == undefined) return next(err);
+        if (typeof t === 'undefined') return res.status(404).json({ "message": 'Not found' });;
         t.name = req.body.name || t.name;
         t.tasks = req.body.tasks || t.tasks;
 		res.json(
@@ -108,15 +108,15 @@ router.route('/tasks/:project')
 	.post(function (req, res, next)
 	{
         var t = getTask(req.params.project, req.params.task);
-        if (t != undefined) return next(err);
+        if (typeof t !== 'undefined') return res.status(500).json({"message": "Already exists"});
         getProject.tasks.push({
             "name": req.body.name,
             "start_time": req.body.start_time
         })
-        res.json(
-		{
-			message: 'task added!'
-		});
+        res.status(201).json(
+				{
+					message: 'task added!'
+				});
 	});
 
 router.route('/tasks/:project/:task')
@@ -128,7 +128,7 @@ router.route('/tasks/:project/:task')
 	// modify a task
 	.put(function (req, res, next) {
         var t = getTask(req.params.project, req.params.task);
-        if (t == undefined) return next(err);
+        if (typeof t === 'undefined') return res.status(404).json({"message": "Not found"});
         t.name = req.body.name || t.name;
         t.start_time = req.body.start_time || t.start_time;
         res.json(
