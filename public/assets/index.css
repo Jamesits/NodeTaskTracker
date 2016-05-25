@@ -1,7 +1,7 @@
 #main {
     display: flex;
 }
-#tasklist {
+#tasklistcontainer {
     flex: 1;
 }
 #toolbar {

@@ -24,7 +24,17 @@ router.route('/tasks')
     })
     // get all the tasks (accessed at GET http://localhost:8080/api/tasks)
     .get(function(req, res) {
-      res.json({"project1": {"task1": 1464095547, "task2": 1464132982}});
+      res.json({
+          "projects": [
+              {
+                  "name": "project1",
+                  "tasks": [
+                      {"name": "task1", "start_time": 1464095547},
+                      {"name": "task2", "start_time": 1464132982}
+                  ]
+              }
+          ]
+      });
     })
     // update a task (accessed at PUT http://localhost:8080/api/tasks/:task_id)
     .put(function(req, res) {
