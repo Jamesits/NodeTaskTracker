@@ -60,7 +60,7 @@ router.get('/', function (req, res)
 {
 	res.json(
 	{
-		message: 'NodeTaskTracker API 0.1'
+		message: 'NodeTaskTracker API'
 	});
 });
 

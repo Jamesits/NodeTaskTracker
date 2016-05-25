@@ -26,7 +26,6 @@ function getTaskList()
 {
 	var request = new XMLHttpRequest();
 	request.open('GET', '/api/tasks', true);
-
 	request.onload = function ()
 	{
 		if (this.status >= 200 && this.status < 400)
@@ -41,13 +40,26 @@ function getTaskList()
 
 		}
 	};
-
 	request.onerror = function ()
 	{
 		console.log(this.response);
 	};
-
 	request.send();
+}
+
+function addProject(proj)
+{
+	var request = new XMLHttpRequest();
+	request.open('POST', '/api/tasks', true);
+	request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	request.onload = function () {getTaskList();};
+	request.send(JSON.stringify({"name": proj}));
+}
+
+function newProjectFormSubmit()
+{
+	addProject(document.getElementById('newprojectname').value);
+	return false;
 }
 
 (function ready(fn)
