@@ -1,5 +1,13 @@
 {
-    "name": "node-api",
+    "name": "NodeTaskTracker",
+    "description": "Time tracking of tasks built with node.js and HTML5",
+    "homepage": "https://github.com/Jamesits/NodeTaskTracker",
+    "bugs": {
+        "url": "https://github.com/Jamesits/NodeTaskTracker/issues",
+        "email": "i@swineson.me"
+    },
+    "license": "Unlicense",
+    "author": "James Swineson <i@swineson.me> (https://swineson.me)",
     "main": "server.js",
     "dependencies": {
         "body-parser": "^1.15.1",
