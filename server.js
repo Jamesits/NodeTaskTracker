@@ -73,6 +73,8 @@ router.route('/tasks')
 	// add project
 	.post(function (req, res)
 	{
+        var t = getProject(req.params.project);
+        if (t == undefined) return next(err);
 		taskStorage.projects.push(
 		{
 			"name": req.body.name,
@@ -94,7 +96,7 @@ router.route('/tasks/:project')
 	.put(function (req, res)
 	{
         var t = getProject(req.params.project);
-        if (!t) return next(err);
+        if (t == undefined) return next(err);
         t.name = req.body.name || t.name;
         t.tasks = req.body.tasks || t.tasks;
 		res.json(
@@ -106,7 +108,7 @@ router.route('/tasks/:project')
 	.post(function (req, res, next)
 	{
         var t = getTask(req.params.project, req.params.task);
-        if (t) return next(err);
+        if (t != undefined) return next(err);
         getProject.tasks.push({
             "name": req.body.name,
             "start_time": req.body.start_time
@@ -126,7 +128,7 @@ router.route('/tasks/:project/:task')
 	// modify a task
 	.put(function (req, res, next) {
         var t = getTask(req.params.project, req.params.task);
-        if (!t) return next(err);
+        if (t == undefined) return next(err);
         t.name = req.body.name || t.name;
         t.start_time = req.body.start_time || t.start_time;
         res.json(
