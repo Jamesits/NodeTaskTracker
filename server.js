@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 var port = process.env.PORT || 3000; // set our port
 var router = express.Router();
 
+// ======= model ========
 var taskStorage = {
 	"projects": [
 		{
@@ -44,6 +45,7 @@ function getTask(proj, task) {
             return e.name === task;
         })
 }
+// ======= model ========
 
 router.use(function (req, res, next)
 {
