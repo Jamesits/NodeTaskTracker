@@ -1,0 +1,50 @@
+#main {
+    display: flex;
+}
+#tasklist {
+    flex: 1;
+}
+#toolbar {
+    width: 250px;
+}
+.tree, .tree ul {
+    list-style-type: none;
+    margin-left: 0 0 0 10px;
+    padding: 0;
+    position: relative;
+}
+.tree li {
+    margin: 0;
+    padding-top: 0;
+    padding-left: 12px;
+    position: relative;
+}
+.tree li::before, .tree li::after {
+    content: '';
+    position: absolute;
+    left: 0;
+}
+.tree li::before {
+    border-top: 1px solid #000;
+    top: 10px;
+    width: 10px;
+    /*height: 0;*/
+}
+.tree li::after {
+    border-left: 1px solid #000;
+    height: 100%;
+    width: 0px;
+    top: -10px;
+}
+.tree>li::after {
+    top: 10px;
+}
+.tree>li:last-child::after {
+    display: none;
+}
+#footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    padding-bottom: 6px;
+}

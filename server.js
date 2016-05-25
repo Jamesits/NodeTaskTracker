@@ -36,6 +36,7 @@ router.route('/tasks')
     });
 
 app.use('/api', router);
+app.use(express.static('public'));
 
 // start server
 app.listen(port);
