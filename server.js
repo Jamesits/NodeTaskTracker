@@ -92,7 +92,7 @@ router.route('/tasks/:project')
 	.put(function (req, res)
 	{
         var t = getProject(req.params.project);
-        if (!t) console.log("error");
+        if (!t) return next(err);
         t.name = req.body.name || t.name;
         t.tasks = req.body.tasks || t.tasks;
 		res.json(
@@ -101,10 +101,10 @@ router.route('/tasks/:project')
     		});
 	})
 	// add task
-	.post(function (req, res)
+	.post(function (req, res, next)
 	{
         var t = getTask(req.params.project, req.params.task);
-        if (t) console.log("exists");
+        if (t) return next(err);
         getProject.tasks.push({
             "name": req.body.name,
             "start_time": req.body.start_time
@@ -122,9 +122,9 @@ router.route('/tasks/:project/:task')
 		res.json(getTask(req.params.project, req.params.task))
 	})
 	// modify a task
-	.put(function (req, res) {
+	.put(function (req, res, next) {
         var t = getTask(req.params.project, req.params.task);
-        if (!t) console.log("error");
+        if (!t) return next(err);
         t.name = req.body.name || t.name;
         t.start_time = req.body.start_time || t.start_time;
         res.json(
