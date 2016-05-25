@@ -27,6 +27,24 @@ var taskStorage = {
   ]
 };
 
+function getProject(proj) {
+    return taskStorage.projects.find(function (e)
+    {
+        return e.name === proj;
+    })
+}
+
+function getTask(proj, task) {
+    return taskStorage.projects.find(function (e)
+        {
+            return e.name === proj;
+        })
+        .tasks.find(function (e)
+        {
+            return e.name === task;
+        })
+}
+
 router.use(function (req, res, next)
 {
 	// do logging
@@ -45,10 +63,12 @@ router.get('/', function (req, res)
 });
 
 router.route('/tasks')
+	// get everything
 	.get(function (req, res)
 	{
 		res.json(taskStorage);
 	})
+	// add project
 	.post(function (req, res)
 	{
 		taskStorage.projects.push(
@@ -63,31 +83,55 @@ router.route('/tasks')
 	});
 
 router.route('/tasks/:project')
+	// get task under a project
 	.get(function (req, res)
 	{
-		res.json(taskStorage.projects.find(function (e)
-		{
-			return e.name === req.params.project;
-		}))
+		res.json(getProject(req.params.project))
 	})
+	// modify project name
+	.put(function (req, res)
+	{
+        var t = getProject(req.params.project);
+        if (!t) console.log("error");
+        t.name = req.body.name || t.name;
+        t.tasks = req.body.tasks || t.tasks;
+		res.json(
+            {
+    			message: 'project modified!'
+    		});
+	})
+	// add task
 	.post(function (req, res)
 	{
-		res.json(
-		{});
+        var t = getTask(req.params.project, req.params.task);
+        if (t) console.log("exists");
+        getProject.tasks.push({
+            "name": req.body.name,
+            "start_time": req.body.start_time
+        })
+        res.json(
+		{
+			message: 'task added!'
+		});
 	});
 
 router.route('/tasks/:project/:task')
+	// get a task
 	.get(function (req, res)
 	{
-		res.json(taskStorage.projects.find(function (e)
-			{
-				return e.name === req.params.project;
-			})
-			.tasks.find(function (e)
-			{
-				return e.name === req.params.task;
-			}))
-	});
+		res.json(getTask(req.params.project, req.params.task))
+	})
+	// modify a task
+	.put(function (req, res) {
+        var t = getTask(req.params.project, req.params.task);
+        if (!t) console.log("error");
+        t.name = req.body.name || t.name;
+        t.start_time = req.body.start_time || t.start_time;
+        res.json(
+		{
+			message: 'task modified!'
+		});
+    });
 
 app.use('/api', router);
 app.use(express.static('public'));
