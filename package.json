@@ -6,6 +6,11 @@
         "url": "https://github.com/Jamesits/NodeTaskTracker/issues",
         "email": "i@swineson.me"
     },
+    "repository" :
+      {
+        "type" : "git",
+        "url" : "https://github.com/Jamesits/NodeTaskTracker.git"
+      },
     "license": "Unlicense",
     "author": "James Swineson <i@swineson.me> (https://swineson.me)",
     "main": "server.js",
