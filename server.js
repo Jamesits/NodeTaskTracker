@@ -30,7 +30,7 @@ var taskStorage = {
 router.use(function (req, res, next)
 {
 	// do logging
-	console.log('Got request: ', req.method, req.url);
+	console.log('Got request: ', req.method, req.url, "\n", req.body);
 	next(); // make sure we go to the next routes and don't stop here
 });
 
@@ -51,9 +51,14 @@ router.route('/tasks')
 	})
 	.post(function (req, res)
 	{
+		taskStorage.projects.push(
+		{
+			"name": req.body.name,
+			"tasks": []
+		});
 		res.json(
 		{
-			message: 'task updated!'
+			message: 'task added!'
 		});
 	});
 
