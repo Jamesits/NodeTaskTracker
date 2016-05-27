@@ -12,6 +12,7 @@ var router = express.Router();
 // ======= model ========
 // There are some dummy data used to debug.
 // Remove them before production.
+// var taskStorage = {"projects":[]};
 var taskStorage = {
 	"projects": [
 		{
