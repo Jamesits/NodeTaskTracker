@@ -92,19 +92,31 @@ router.route('/tasks/:project')
 	// get task under a project
 	.get(function (req, res)
 	{
-		res.json(getProject(req.params.project))
+		var t = getProject(req.params.project);
+        if (typeof t === 'undefined') return res.status(404).json({ "message": 'Not found' });
+		res.json(t);
 	})
 	// modify project name
 	.put(function (req, res, next)
 	{
         var t = getProject(req.params.project);
-        if (typeof t === 'undefined') return res.status(404).json({ "message": 'Not found' });;
+        if (typeof t === 'undefined') return res.status(404).json({ "message": 'Not found' });
         t.name = req.body.name || t.name;
         t.tasks = req.body.tasks || t.tasks;
 		res.json(
             {
     			message: 'project modified!'
     		});
+	})
+	.delete(function (req, res, next)
+	{
+		var t = getProject(req.params.project);
+		if (typeof t === 'undefined') return res.status(404).json({ "message": 'Not found' });
+		taskStorage.projects.splice(taskStorage.projects.indexOf(t), 1);
+		res.json(
+		{
+			message: 'project deleted!'
+		});
 	})
 	// add task
 	.post(function (req, res, next)
@@ -125,10 +137,16 @@ router.route('/tasks/:project/:task')
 	// get a task
 	.get(function (req, res)
 	{
-		res.json(getTask(req.params.project, req.params.task))
+		var p = getProject(req.params.project);
+		if (typeof p === 'undefined') return res.status(404).json({ "message": 'Project not found' });
+		var t = getTask(req.params.project, req.params.task);
+        if (typeof t === 'undefined') return res.status(404).json({"message": "Task not found"});
+		res.json(t);
 	})
 	// modify a task
 	.put(function (req, res, next) {
+		var p = getProject(req.params.project);
+		if (typeof p === 'undefined') return res.status(404).json({ "message": 'Not found' });
         var t = getTask(req.params.project, req.params.task);
         if (typeof t === 'undefined') return res.status(404).json({"message": "Not found"});
         t.name = req.body.name || t.name;
@@ -137,7 +155,18 @@ router.route('/tasks/:project/:task')
 		{
 			message: 'task modified!'
 		});
-    });
+    })
+	.delete(function (req, res, next) {
+		var p = getProject(req.params.project);
+		if (typeof p === 'undefined') return res.status(404).json({ "message": 'Not found' });
+		var t = getTask(req.params.project, req.params.task);
+        if (typeof t === 'undefined') return res.status(404).json({"message": "Not found"});
+		p.tasks.splice(p.tasks.indexOf(t), 1);
+		res.json(
+		{
+			message: 'task deleted!'
+		});
+	});
 
 app.use('/api', router);
 app.use(express.static('public'));
