@@ -10,6 +10,8 @@ var port = process.env.PORT || 3000; // set our port
 var router = express.Router();
 
 // ======= model ========
+// There are some dummy data used to debug.
+// Remove them before production.
 var taskStorage = {
 	"projects": [
 		{
